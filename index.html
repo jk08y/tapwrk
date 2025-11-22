@@ -2,11 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>tapwrk-app</title>
+    <link rel="icon" type="image/svg+xml" href="/logo.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    
+    <!-- SEO -->
+    <title>Tapwrk | Premium Micro-Earnings</title>
+    <meta name="description" content="Earn real income completing simple tasks. The premium micro-tasking platform.">
+    
+    <!-- Dynamic Theme Colors for iOS/Android Browser Chrome -->
+    <!-- Light Mode: Matches bg-ios-light (#F2F2F7) -->
+    <meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme: light)">
+    <!-- Dark Mode: Matches bg-ios-dark (#000000) -->
+    <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="/logo.png">
   </head>
-  <body>
+  <body class="bg-ios-light dark:bg-ios-dark text-ios-dark dark:text-ios-light antialiased selection:bg-ios-blue selection:text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
