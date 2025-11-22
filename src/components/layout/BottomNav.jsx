@@ -1,15 +1,36 @@
 // path: src/components/layout/BottomNav.jsx
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { IoGridOutline, IoCheckmarkCircleOutline, IoWalletOutline, IoPersonOutline } from 'react-icons/io5';
+import { IoGrid, IoCheckmarkCircle, IoWallet, IoPerson, IoGridOutline, IoCheckmarkCircleOutline, IoWalletOutline, IoPersonOutline } from 'react-icons/io5';
 import { cn } from '../../utils/cn';
 
 const BottomNav = () => {
   const navItems = [
-    { name: 'Home', to: '/dashboard', icon: IoGridOutline, exact: true },
-    { name: 'Tasks', to: '/dashboard/tasks', icon: IoCheckmarkCircleOutline },
-    { name: 'Earnings', to: '/dashboard/earnings', icon: IoWalletOutline },
-    { name: 'Profile', to: '/dashboard/profile', icon: IoPersonOutline },
+    { 
+      name: 'Home', 
+      to: '/dashboard', 
+      icon: IoGridOutline, 
+      activeIcon: IoGrid,
+      exact: true 
+    },
+    { 
+      name: 'Tasks', 
+      to: '/dashboard/tasks', 
+      icon: IoCheckmarkCircleOutline,
+      activeIcon: IoCheckmarkCircle
+    },
+    { 
+      name: 'Earnings', 
+      to: '/dashboard/earnings', 
+      icon: IoWalletOutline,
+      activeIcon: IoWallet
+    },
+    { 
+      name: 'Profile', 
+      to: '/dashboard/profile', 
+      icon: IoPersonOutline,
+      activeIcon: IoPerson
+    },
   ];
 
   return (
@@ -25,20 +46,23 @@ const BottomNav = () => {
               isActive ? "text-ios-blue" : "text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
             )}
           >
-            {({ isActive }) => (
-              <>
-                <span className={cn(
-                  "transition-transform duration-300 absolute",
-                  isActive ? "-translate-y-1" : "group-active:scale-90"
-                )}>
-                  <item.icon size={22} className={cn(isActive && "drop-shadow-sm")} />
-                </span>
+            {({ isActive }) => {
+              const IconComponent = isActive ? item.activeIcon : item.icon;
+              return (
+                <>
+                  <span className={cn(
+                    "transition-transform duration-300 absolute",
+                    isActive ? "-translate-y-1" : "group-active:scale-90"
+                  )}>
+                    <IconComponent size={22} className={cn(isActive && "drop-shadow-sm")} />
+                  </span>
 
-                {isActive && (
-                  <span className="absolute bottom-2 w-1 h-1 bg-ios-blue rounded-full animate-fade-in" />
-                )}
-              </>
-            )}
+                  {isActive && (
+                    <span className="absolute bottom-2 w-1 h-1 bg-ios-blue rounded-full animate-fade-in" />
+                  )}
+                </>
+              );
+            }}
           </NavLink>
         ))}
       </div>
