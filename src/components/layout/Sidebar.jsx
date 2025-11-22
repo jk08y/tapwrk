@@ -1,6 +1,7 @@
 // path: src/components/layout/Sidebar.jsx
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+// Reverted to standard imports without extensions for better compatibility
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { 
@@ -23,7 +24,8 @@ const Sidebar = ({ isOpen, onClose }) => {
   const { theme, toggleTheme } = useTheme();
 
   const navItems = [
-    { name: 'Dashboard', to: '/dashboard', icon: IoGridOutline },
+    // 'end: true' ensures exact matching for the dashboard root
+    { name: 'Dashboard', to: '/dashboard', icon: IoGridOutline, end: true },
     { name: 'Tasks', to: '/dashboard/tasks', icon: IoCheckmarkCircleOutline },
     { name: 'Earnings', to: '/dashboard/earnings', icon: IoWalletOutline },
     { name: 'Referrals', to: '/dashboard/referrals', icon: IoPeopleOutline },
@@ -33,7 +35,7 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   return (
     <>
-      {/* Mobile Overlay - Increased z-index to cover BottomNav (z-50) */}
+      {/* Mobile Overlay */}
       <div 
         className={cn(
           "fixed inset-0 bg-black/30 backdrop-blur-md z-[60] lg:hidden transition-opacity duration-300",
@@ -42,18 +44,24 @@ const Sidebar = ({ isOpen, onClose }) => {
         onClick={onClose}
       />
 
-      {/* Sidebar Container - Increased z-index to sit ABOVE the overlay */}
+      {/* Sidebar Container */}
       <aside 
         className={cn(
-          "fixed top-0 left-0 bottom-0 z-[70] w-[280px] bg-ios-cardLight dark:bg-[#151516] border-r border-gray-200 dark:border-gray-800 transform transition-transform duration-300 cubic-bezier(0.4, 0, 0.2, 1) lg:translate-x-0 shadow-2xl",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          "fixed top-0 left-0 bottom-0 w-[280px] z-[70]",
+          "bg-ios-cardLight dark:bg-[#151516] border-r border-gray-200 dark:border-gray-800",
+          "overflow-hidden", // Sharp corners as requested
+          "transform transition-transform duration-300 cubic-bezier(0.4, 0, 0.2, 1) shadow-2xl",
+          isOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
         )}
       >
-        <div className="h-full flex flex-col p-6 relative">
+        {/* Subtle top-left glow */}
+        <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-ios-blue/5 to-transparent pointer-events-none" />
+
+        <div className="h-full flex flex-col p-6 relative z-10">
           {/* Mobile Close Button */}
           <button 
             onClick={onClose}
-            className="lg:hidden absolute top-4 right-4 p-2 rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors"
+            className="lg:hidden absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 transition-colors active:scale-95"
           >
             <IoClose size={24} />
           </button>
@@ -66,10 +74,9 @@ const Sidebar = ({ isOpen, onClose }) => {
             <span className="font-bold text-2xl tracking-tight dark:text-white">Tapwrk</span>
           </Link>
 
-          {/* User Card (Compact) */}
+          {/* User Card */}
           <div className="mb-8 p-4 rounded-2xl bg-ios-light dark:bg-white/5 flex items-center gap-3 border border-transparent dark:border-white/5">
-            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden">
-              {/* Placeholder or User Image */}
+            <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 overflow-hidden border border-white/10">
               {userProfile?.photoURL ? (
                 <img src={userProfile.photoURL} alt="User" className="w-full h-full object-cover" />
               ) : (
@@ -90,16 +97,17 @@ const Sidebar = ({ isOpen, onClose }) => {
               <NavLink
                 key={item.name}
                 to={item.to}
+                end={item.end} 
                 onClick={() => window.innerWidth < 1024 && onClose()}
                 className={({ isActive }) => cn(
-                  "flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 group",
+                  "flex items-center gap-3 px-4 py-3.5 rounded-2xl text-sm font-medium transition-all duration-200 group relative overflow-hidden",
                   isActive 
                     ? "bg-ios-blue text-white shadow-lg shadow-blue-500/20" 
                     : "text-gray-500 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-white"
                 )}
               >
-                <item.icon size={22} />
-                {item.name}
+                <item.icon size={22} className="relative z-10" />
+                <span className="relative z-10">{item.name}</span>
               </NavLink>
             ))}
           </nav>

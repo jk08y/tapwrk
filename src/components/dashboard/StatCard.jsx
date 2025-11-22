@@ -3,8 +3,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
 import { IoTrendingUp, IoTrendingDown } from 'react-icons/io5';
-import Skeleton from '../common/Skeleton';
 import { cn } from '../../utils/cn';
+
+// Simple Skeleton for internal use if needed, usually imported but keeping it self-contained for safety
+const Skeleton = ({ className }) => (
+  <div className={cn("animate-pulse bg-gray-200 dark:bg-gray-800 rounded-xl", className)} />
+);
 
 const StatCard = ({ 
   title, 
@@ -46,7 +50,7 @@ const StatCard = ({
       className="ios-card p-6 h-full flex flex-col justify-between hover:shadow-md transition-shadow"
     >
       <div className="flex justify-between items-start mb-4">
-        <h3 className="text-gray-500 dark:text-gray-400 font-medium text-sm uppercase tracking-wide">
+        <h3 className="text-gray-500 dark:text-gray-400 font-medium text-xs uppercase tracking-wide">
           {title}
         </h3>
         <div className={cn("p-2.5 rounded-xl transition-colors", colorStyles[color])}>
@@ -78,7 +82,7 @@ const StatCard = ({
 
 StatCard.propTypes = {
   title: PropTypes.string,
-  value: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   icon: PropTypes.elementType,
   trend: PropTypes.oneOf(['up', 'down']),
   trendValue: PropTypes.string,

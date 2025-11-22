@@ -1,5 +1,5 @@
 // path: src/pages/Home.jsx
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -9,7 +9,8 @@ import {
   IoCheckmarkCircle, 
   IoGlobeOutline, 
   IoPeopleOutline,
-  IoStar
+  IoStar,
+  IoCloseOutline
 } from 'react-icons/io5';
 import Button from '../components/common/Button.jsx';
 
@@ -40,7 +41,35 @@ const StatBadge = ({ icon: Icon, label }) => (
   </div>
 );
 
+const TaskCard = ({ title, reward, status, icon }) => (
+  <div className="h-14 w-full bg-white dark:bg-[#151516] border border-gray-100 dark:border-gray-800 rounded-xl flex items-center px-4 gap-4 hover:border-ios-blue/30 dark:hover:border-ios-blue/30 transition-colors">
+    <div className="w-8 h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-indigo flex items-center justify-center text-white text-sm flex-shrink-0">
+      {icon}
+    </div>
+    <div className="flex-1 min-w-0">
+      <div className="text-sm font-semibold text-ios-dark dark:text-white truncate">{title}</div>
+      <div className="text-xs text-gray-400">{status}</div>
+    </div>
+    <div className="text-sm font-bold text-ios-green flex-shrink-0">${reward}</div>
+  </div>
+);
+
 const Home = () => {
+  const [activeTab, setActiveTab] = useState('available');
+  const [notifications, setNotifications] = useState([
+    { id: 1, amount: 42.50, task: 'Survey Completed', icon: '✓' },
+    { id: 2, amount: 15.00, task: 'Review Posted', icon: '✓' }
+  ]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (notifications.length > 0) {
+        setNotifications(prev => prev.slice(1));
+      }
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [notifications]);
+
   return (
     <div className="overflow-hidden bg-ios-light dark:bg-black min-h-screen">
       
@@ -114,60 +143,138 @@ const Home = () => {
               {/* Inner Screen */}
               <div className="rounded-t-[2rem] overflow-hidden bg-white dark:bg-[#0A0A0A] border border-gray-100 dark:border-gray-800 shadow-inner aspect-[16/10] md:aspect-[16/7] relative">
                 {/* Abstract UI */}
-                <div className="absolute inset-0 bg-gray-50/50 dark:bg-[#0A0A0A] p-6 grid grid-cols-12 gap-6">
+                <div className="absolute inset-0 bg-gradient-to-b from-gray-50/50 to-white/30 dark:from-[#0A0A0A] dark:to-[#0A0A0A] p-3 md:p-6 grid grid-cols-12 gap-3 md:gap-6">
                   
-                  {/* Sidebar Abstract */}
+                  {/* Sidebar - Hidden on Mobile */}
                   <div className="hidden md:block col-span-3 bg-white dark:bg-[#151516] rounded-2xl border border-gray-100 dark:border-gray-800 p-4 space-y-3">
                     <div className="flex items-center gap-3 mb-6">
-                      <div className="w-8 h-8 rounded-lg bg-ios-blue"></div>
-                      <div className="h-3 w-20 bg-gray-100 dark:bg-white/10 rounded-full"></div>
+                      <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-ios-blue to-ios-indigo"></div>
+                      <div className="h-3 w-20 bg-gradient-to-r from-gray-200 to-gray-100 dark:from-white/10 dark:to-white/5 rounded-full"></div>
                     </div>
-                    {[1,2,3,4].map(i => (
-                      <div key={i} className="h-8 w-full bg-gray-50 dark:bg-white/5 rounded-lg"></div>
+                    {[
+                      { label: 'Dashboard', active: true },
+                      { label: 'Available' },
+                      { label: 'Completed' },
+                      { label: 'Earnings' }
+                    ].map((item, i) => (
+                      <div 
+                        key={i} 
+                        className={`h-8 w-full rounded-lg transition-all ${
+                          item.active 
+                            ? 'bg-ios-blue/10 dark:bg-ios-blue/20 border border-ios-blue/30' 
+                            : 'bg-gray-50 dark:bg-white/5 hover:bg-gray-100 dark:hover:bg-white/10'
+                        }`}
+                      ></div>
                     ))}
                   </div>
 
-                  {/* Main Content Abstract */}
-                  <div className="col-span-12 md:col-span-9 space-y-6">
-                    {/* Header */}
-                    <div className="flex justify-between items-center">
-                      <div className="h-6 w-32 bg-gray-200 dark:bg-white/10 rounded-full"></div>
-                      <div className="h-8 w-8 rounded-full bg-gray-200 dark:bg-white/10"></div>
+                  {/* Main Content */}
+                  <div className="col-span-12 md:col-span-9 space-y-3 md:space-y-6 flex flex-col">
+                    {/* Header with Avatar */}
+                    <div className="flex justify-between items-center flex-shrink-0">
+                      <div className="space-y-1">
+                        <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 font-medium">Dashboard</div>
+                        <div className="h-4 md:h-5 w-32 md:w-40 bg-gradient-to-r from-gray-300 to-gray-200 dark:from-white/15 dark:to-white/10 rounded-full"></div>
+                        <div className="h-2 md:h-3 w-24 md:w-28 bg-gray-100 dark:bg-white/5 rounded-full mt-1"></div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-[10px] md:text-xs text-gray-500 dark:text-gray-400 font-medium">BALANCE</div>
+                        <div className="h-6 md:h-7 w-20 md:w-24 bg-gradient-to-r from-ios-blue to-ios-indigo rounded-lg mt-1"></div>
+                      </div>
                     </div>
 
-                    {/* Cards Grid */}
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="col-span-2 h-32 bg-gradient-to-br from-ios-blue to-ios-indigo rounded-2xl shadow-lg shadow-blue-500/20 opacity-90"></div>
-                      <div className="col-span-1 h-32 bg-white dark:bg-[#151516] border border-gray-100 dark:border-gray-800 rounded-2xl"></div>
-                    </div>
-
-                    {/* List */}
-                    <div className="space-y-3">
-                      {[1,2,3].map(i => (
-                        <div key={i} className="h-14 w-full bg-white dark:bg-[#151516] border border-gray-100 dark:border-gray-800 rounded-xl flex items-center px-4 gap-4">
-                          <div className="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/5"></div>
-                          <div className="h-3 w-40 bg-gray-100 dark:bg-white/5 rounded-full"></div>
+                    {/* Stats Cards Grid - Responsive */}
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4 flex-shrink-0">
+                      <div className="col-span-2 p-3 md:p-4 rounded-xl md:rounded-2xl bg-gradient-to-br from-ios-blue via-ios-blue to-ios-indigo shadow-xl shadow-blue-500/20 space-y-2 md:space-y-3">
+                        <div className="text-[9px] md:text-xs text-white/70 font-semibold tracking-wider">TOTAL EARNINGS</div>
+                        <div className="h-6 md:h-8 w-32 md:w-40 bg-white/90 rounded-lg flex items-center px-2 md:px-3">
+                          <span className="text-xs md:text-sm font-bold text-ios-blue">$1,247.50</span>
                         </div>
-                      ))}
+                        <div className="flex gap-2 pt-1 md:pt-2">
+                          <div className="h-1.5 md:h-2 flex-1 bg-white/40 rounded-full"></div>
+                          <div className="h-1.5 md:h-2 flex-1 bg-white/20 rounded-full"></div>
+                        </div>
+                      </div>
+                      <div className="col-span-1 p-3 md:p-4 bg-white dark:bg-[#151516] border border-gray-100 dark:border-gray-800 rounded-xl md:rounded-2xl space-y-2 md:space-y-3">
+                        <div className="text-[9px] md:text-xs text-gray-600 dark:text-gray-400 font-semibold tracking-wider">COMPLETED</div>
+                        <div className="h-5 md:h-6 w-12 md:w-16 bg-gradient-to-r from-ios-green to-emerald-500 rounded-lg"></div>
+                      </div>
+                    </div>
+
+                    {/* Tabs and Task List - Scrollable on Mobile */}
+                    <div className="space-y-2 md:space-y-3 flex-1 overflow-y-auto">
+                      <div className="flex gap-2 border-b border-gray-100 dark:border-gray-800 pb-2 md:pb-3 overflow-x-auto flex-shrink-0">
+                        {['Available', 'In Progress', 'Completed'].map((tab, i) => (
+                          <div 
+                            key={i}
+                            className={`px-2 md:px-3 py-1 md:py-1.5 rounded-lg text-[10px] md:text-xs font-semibold transition-all whitespace-nowrap ${
+                              i === 0
+                                ? 'bg-ios-blue/10 dark:bg-ios-blue/20 text-ios-blue border border-ios-blue/30'
+                                : 'text-gray-400 hover:text-gray-600 dark:hover:text-gray-300'
+                            }`}
+                          ></div>
+                        ))}
+                      </div>
+                      
+                      {/* Task Cards - Compact on Mobile */}
+                      <div className="space-y-2 md:space-y-3">
+                        <div className="text-[9px] md:text-xs text-gray-600 dark:text-gray-400 font-semibold tracking-wider px-1 mb-2">AVAILABLE TASKS</div>
+                        <div className="h-12 md:h-14 w-full bg-white dark:bg-[#151516] border border-gray-100 dark:border-gray-800 rounded-lg md:rounded-xl flex items-center px-2 md:px-4 gap-3 hover:border-ios-blue/30 dark:hover:border-ios-blue/30 transition-colors">
+                          <div className="w-6 md:w-8 h-6 md:h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-indigo flex items-center justify-center text-white text-xs md:text-sm flex-shrink-0">
+                            📱
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs md:text-sm font-semibold text-ios-dark dark:text-white truncate">Product Review</div>
+                            <div className="text-[10px] md:text-xs text-gray-400 truncate">5 min ago</div>
+                          </div>
+                          <div className="text-xs md:text-sm font-bold text-ios-green flex-shrink-0">$12.50</div>
+                        </div>
+                        <div className="h-12 md:h-14 w-full bg-white dark:bg-[#151516] border border-gray-100 dark:border-gray-800 rounded-lg md:rounded-xl flex items-center px-2 md:px-4 gap-3 hover:border-ios-blue/30 dark:hover:border-ios-blue/30 transition-colors">
+                          <div className="w-6 md:w-8 h-6 md:h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-indigo flex items-center justify-center text-white text-xs md:text-sm flex-shrink-0">
+                            📝
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs md:text-sm font-semibold text-ios-dark dark:text-white truncate">Survey - Tech</div>
+                            <div className="text-[10px] md:text-xs text-gray-400 truncate">12 min ago</div>
+                          </div>
+                          <div className="text-xs md:text-sm font-bold text-ios-green flex-shrink-0">$8.75</div>
+                        </div>
+                        <div className="h-12 md:h-14 w-full bg-white dark:bg-[#151516] border border-gray-100 dark:border-gray-800 rounded-lg md:rounded-xl flex items-center px-2 md:px-4 gap-3 hover:border-ios-blue/30 dark:hover:border-ios-blue/30 transition-colors">
+                          <div className="w-6 md:w-8 h-6 md:h-8 rounded-full bg-gradient-to-br from-ios-blue to-ios-indigo flex items-center justify-center text-white text-xs md:text-sm flex-shrink-0">
+                            ✓
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs md:text-sm font-semibold text-ios-dark dark:text-white truncate">Moderation</div>
+                            <div className="text-[10px] md:text-xs text-gray-400 truncate">28 min ago</div>
+                          </div>
+                          <div className="text-xs md:text-sm font-bold text-ios-green flex-shrink-0">$15.00</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
                 
-                {/* Floating Success Toast */}
-                <motion.div 
-                  initial={{ y: 20, opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  transition={{ delay: 1.5, duration: 0.5 }}
-                  className="absolute bottom-8 right-8 bg-white dark:bg-[#1C1C1E] border border-gray-100 dark:border-gray-700 shadow-xl rounded-xl p-3 flex items-center gap-3 pr-6"
-                >
-                  <div className="w-8 h-8 rounded-full bg-green-100 dark:bg-green-900/30 text-ios-green flex items-center justify-center">
-                    <IoCheckmarkCircle />
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-400">Payment Received</div>
-                    <div className="text-sm font-bold text-ios-dark dark:text-white">+$42.50</div>
-                  </div>
-                </motion.div>
+                {/* Floating Notifications */}
+                <div className="absolute bottom-8 right-8 space-y-3 max-w-xs">
+                  {notifications.map((notif) => (
+                    <motion.div 
+                      key={notif.id}
+                      initial={{ y: 20, opacity: 0, scale: 0.9 }}
+                      animate={{ y: 0, opacity: 1, scale: 1 }}
+                      exit={{ y: -20, opacity: 0, scale: 0.9 }}
+                      transition={{ type: 'spring', stiffness: 300 }}
+                      className="bg-white dark:bg-[#1C1C1E] border border-gray-100 dark:border-gray-700 shadow-xl rounded-xl p-3 flex items-center gap-3 backdrop-blur-md"
+                    >
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900/30 dark:to-emerald-900/30 text-ios-green flex items-center justify-center flex-shrink-0 font-bold text-sm">
+                        {notif.icon}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{notif.task}</div>
+                        <div className="text-sm font-bold text-ios-green">+${notif.amount.toFixed(2)}</div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
@@ -201,21 +308,21 @@ const Home = () => {
             {/* Feature 2: Tall */}
             <motion.div 
               whileHover={{ y: -4 }}
-              className="md:row-span-2 p-8 rounded-[2rem] bg-ios-dark text-white dark:bg-white dark:text-black border border-transparent relative overflow-hidden"
+              className="md:row-span-2 p-8 rounded-[2rem] bg-white dark:bg-ios-dark text-ios-dark dark:text-white border border-transparent relative overflow-hidden"
             >
               <div className="relative z-10 h-full flex flex-col">
-                <div className="w-12 h-12 rounded-2xl bg-white/10 dark:bg-black/10 flex items-center justify-center text-2xl mb-4">
+                <div className="w-12 h-12 rounded-2xl bg-gray-100 dark:bg-white/10 flex items-center justify-center text-2xl mb-4">
                   <IoWalletOutline />
                 </div>
                 <h3 className="text-xl font-bold mb-2">Fast Payouts</h3>
-                <p className="text-gray-400 dark:text-gray-600 text-sm mb-8">Withdraw your earnings via PayPal, Crypto, or Bank Transfer.</p>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-8">Withdraw your earnings via PayPal, Crypto, or Bank Transfer.</p>
                 
-                <div className="mt-auto bg-white/10 dark:bg-black/5 rounded-xl p-4 backdrop-blur-sm border border-white/10 dark:border-black/10">
+                <div className="mt-auto bg-gray-100 dark:bg-white/10 rounded-xl p-4 backdrop-blur-sm border border-gray-200 dark:border-white/10">
                   <div className="flex justify-between text-sm mb-2">
-                    <span className="opacity-70">Available</span>
-                    <span className="font-bold">$145.50</span>
+                    <span className="opacity-70 text-gray-700 dark:text-gray-300">Available</span>
+                    <span className="font-bold text-ios-dark dark:text-white">$145.50</span>
                   </div>
-                  <div className="h-1.5 bg-white/20 dark:bg-black/10 rounded-full overflow-hidden">
+                  <div className="h-1.5 bg-gray-200 dark:bg-white/20 rounded-full overflow-hidden">
                     <div className="h-full w-3/4 bg-ios-green rounded-full"></div>
                   </div>
                 </div>

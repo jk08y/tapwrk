@@ -12,6 +12,7 @@ const variants = {
   danger: 'bg-red-500 text-white hover:bg-red-600 shadow-lg shadow-red-500/20 rounded-full',
 };
 
+// Adjusted sizes to be more compact and "SaaS-like"
 const sizes = {
   sm: 'px-3 py-1.5 text-xs',
   md: 'px-5 py-2.5 text-sm',

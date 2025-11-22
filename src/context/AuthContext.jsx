@@ -20,6 +20,7 @@ export const AuthProvider = ({ children }) => {
       if (user) {
         setCurrentUser(user);
         try {
+          // Fetch additional user details from Firestore
           const profile = await getUserProfile(user.uid);
           setUserProfile(profile);
         } catch (error) {
@@ -35,6 +36,7 @@ export const AuthProvider = ({ children }) => {
     return unsubscribe;
   }, []);
 
+  // Function to force refresh profile (useful after onboarding)
   const refreshProfile = async () => {
     if (currentUser) {
       const profile = await getUserProfile(currentUser.uid);

@@ -28,25 +28,32 @@ const Navbar = () => {
         className={cn(
           'pointer-events-auto w-full max-w-6xl flex items-center justify-between',
           'transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1)',
-          // Base Shape & Border
           'rounded-full border backdrop-blur-xl',
-          // Dynamic Styling based on scroll
           scrolled 
             ? 'py-2.5 px-4 bg-white/90 dark:bg-[#1C1C1E]/90 border-gray-200/50 dark:border-white/10 shadow-lg shadow-black/5' 
             : 'py-3 px-5 bg-white/60 dark:bg-[#1C1C1E]/60 border-white/20 dark:border-white/5 shadow-ios-float'
         )}
       >
-        {/* Logo Section */}
-        <Link to="/" className="flex items-center gap-2.5 group select-none">
-          <div className="relative w-9 h-9 rounded-full overflow-hidden shadow-sm group-hover:scale-105 transition-transform duration-300 border border-white/10">
-             <img src="/logo.png" alt="Tapwrk" className="w-full h-full object-cover" onError={(e) => e.target.style.display = 'none'} />
+        {/* Logo Section - Updated to ALWAYS show text */}
+        <Link to="/" className="flex items-center gap-2.5 group select-none shrink-0">
+          <div className="relative w-9 h-9 rounded-full overflow-hidden shadow-sm group-hover:scale-105 transition-transform duration-300 border border-white/10 bg-white dark:bg-black">
+             <img 
+               src="/logo.png" 
+               alt="Tapwrk" 
+               className="w-full h-full object-cover" 
+               onError={(e) => {
+                 e.target.style.display = 'none';
+                 e.target.nextSibling.style.display = 'flex';
+               }} 
+             />
              {/* Fallback Logo */}
-             <div className="absolute inset-0 bg-gradient-to-br from-ios-blue to-ios-indigo flex items-center justify-center text-white font-bold text-sm">T</div>
+             <div className="hidden absolute inset-0 bg-gradient-to-br from-ios-blue to-ios-indigo items-center justify-center text-white font-bold text-sm">T</div>
           </div>
-          <span className="font-bold text-lg tracking-tight text-ios-dark dark:text-white hidden sm:block">Tapwrk</span>
+          {/* Removed 'hidden sm:block' so text is visible on mobile */}
+          <span className="font-bold text-lg tracking-tight text-ios-dark dark:text-white">Tapwrk</span>
         </Link>
         
-        {/* Desktop Navigation - Centered Pill */}
+        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center justify-center absolute left-1/2 -translate-x-1/2">
           <div className="flex items-center p-1.5 rounded-full bg-gray-100/80 dark:bg-white/10 border border-white/50 dark:border-white/5 backdrop-blur-md">
             {['Features', 'How it Works', 'Pricing'].map((item) => (

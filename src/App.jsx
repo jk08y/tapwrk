@@ -4,11 +4,11 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Context Providers
+// Context Providers - Standard imports
 import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 
-// Routing & Utilities
+// Routing & Utilities - Standard imports
 import AnimatedRoutes from './components/layout/AnimatedRoutes';
 import ScrollToTop from './components/common/ScrollToTop';
 
@@ -35,7 +35,6 @@ function App() {
             draggable
             pauseOnHover
             theme="colored"
-            // Custom class for spacing, specific styles are in index.css
             className="mt-4"
           />
         </AuthProvider>

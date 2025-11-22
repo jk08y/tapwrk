@@ -2,18 +2,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { motion } from 'framer-motion';
-import { IoTimeOutline, IoWalletOutline, IoChevronForward, IoLogoInstagram, IoLogoYoutube, IoLogoTiktok, IoDocumentTextOutline, IoHardwareChipOutline } from 'react-icons/io5';
-import Button from '../common/Button';
+// Ensure react-icons is installed in your package.json. 
+// If this fails again, run: npm install react-icons
+import { 
+  IoTimeOutline, 
+  IoWalletOutline, 
+  IoChevronForward, 
+  IoLogoInstagram, 
+  IoLogoYoutube, 
+  IoLogoTiktok, 
+  IoDocumentTextOutline, 
+  IoHardwareChipOutline,
+  IoStar
+} from 'react-icons/io5';
+import Button from '../common/Button.jsx'; // Ensure correct relative path
 import { cn } from '../../utils/cn';
 
 const getIcon = (type) => {
   switch (type) {
-    case 'instagram': return <IoLogoInstagram className="text-pink-500" size={24} />;
-    case 'youtube': return <IoLogoYoutube className="text-red-500" size={24} />;
-    case 'tiktok': return <IoLogoTiktok className="text-black dark:text-white" size={24} />;
-    case 'survey': return <IoDocumentTextOutline className="text-ios-blue" size={24} />;
-    case 'ai': return <IoHardwareChipOutline className="text-ios-indigo" size={24} />;
-    default: return <IoDocumentTextOutline className="text-gray-500" size={24} />;
+    case 'instagram': return <IoLogoInstagram className="text-pink-500" size={22} />;
+    case 'youtube': return <IoLogoYoutube className="text-red-500" size={22} />;
+    case 'tiktok': return <IoLogoTiktok className="text-black dark:text-white" size={22} />;
+    case 'survey': return <IoDocumentTextOutline className="text-ios-blue" size={22} />;
+    case 'ai': return <IoHardwareChipOutline className="text-ios-indigo" size={22} />;
+    default: return <IoDocumentTextOutline className="text-gray-500" size={22} />;
   }
 };
 
@@ -25,60 +37,69 @@ const TaskCard = ({ task, onStart }) => {
       animate={{ opacity: 1, scale: 1 }}
       exit={{ opacity: 0, scale: 0.98 }}
       whileHover={{ y: -2 }}
-      className="ios-card p-5 flex flex-col md:flex-row gap-5 items-start md:items-center group cursor-pointer border-l-4 border-l-transparent hover:border-l-ios-blue transition-all"
+      onClick={() => onStart(task)}
+      className="group relative bg-white dark:bg-[#1C1C1E] rounded-[2rem] p-5 border border-gray-200 dark:border-gray-800 shadow-sm hover:shadow-ios-float transition-all cursor-pointer overflow-hidden"
     >
-      {/* Icon Container */}
-      <div className="w-12 h-12 rounded-2xl bg-gray-100 dark:bg-white/5 flex items-center justify-center shadow-sm flex-shrink-0">
-        {getIcon(task.platform || task.type)}
-      </div>
+      {/* Hover Highlight Effect */}
+      <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-50/50 to-transparent dark:via-white/5 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000 pointer-events-none" />
 
-      {/* Content */}
-      <div className="flex-1 space-y-1">
-        <div className="flex items-center gap-2">
-          <span className="px-2 py-0.5 rounded-md bg-gray-100 dark:bg-white/10 text-[10px] font-bold uppercase tracking-wider text-gray-500">
-            {task.category}
-          </span>
-          {task.hot && (
-            <span className="px-2 py-0.5 rounded-md bg-orange-100 dark:bg-orange-900/20 text-[10px] font-bold uppercase tracking-wider text-orange-500">
-              Hot
-            </span>
-          )}
-        </div>
-        <h3 className="font-semibold text-ios-dark dark:text-white text-lg leading-tight">
-          {task.title}
-        </h3>
-        <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
-          {task.description}
-        </p>
-      </div>
-
-      {/* Meta & Action */}
-      <div className="flex flex-row md:flex-col items-center md:items-end gap-4 md:gap-1 w-full md:w-auto mt-2 md:mt-0 justify-between md:justify-center">
-        <div className="text-right">
-          <div className="flex items-center gap-1 text-ios-green font-bold text-lg">
-            <IoWalletOutline size={18} />
-            <span>${task.reward.toFixed(2)}</span>
-          </div>
-          <div className="flex items-center gap-1 text-xs text-gray-400 justify-end">
-            <IoTimeOutline />
-            <span>{task.timeEstimate}</span>
-          </div>
-        </div>
+      <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center relative z-10">
         
-        <Button 
-          variant="secondary" 
-          size="sm" 
-          className="md:hidden w-24 rounded-xl bg-ios-light dark:bg-white/10 border-0"
-          onClick={(e) => {
-            e.stopPropagation();
-            onStart(task);
-          }}
-        >
-          Start
-        </Button>
+        {/* Icon Box */}
+        <div className="w-14 h-14 rounded-2xl bg-gray-50 dark:bg-black/40 border border-gray-100 dark:border-white/5 flex items-center justify-center shadow-inner shrink-0">
+          {getIcon(task.platform || task.type)}
+        </div>
 
-        <div className="hidden md:flex w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10 items-center justify-center text-gray-400 group-hover:bg-ios-blue group-hover:text-white transition-colors">
-          <IoChevronForward size={18} />
+        {/* Content */}
+        <div className="flex-1 min-w-0 space-y-1">
+          <div className="flex items-center gap-2 mb-1">
+            <span className="px-2.5 py-0.5 rounded-md bg-gray-100 dark:bg-white/10 text-[10px] font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400">
+              {task.category}
+            </span>
+            {task.hot && (
+              <span className="flex items-center gap-1 px-2.5 py-0.5 rounded-md bg-orange-50 dark:bg-orange-900/20 text-[10px] font-bold uppercase tracking-wider text-orange-500">
+                <IoStar size={10} /> Hot
+              </span>
+            )}
+          </div>
+          
+          <h3 className="font-bold text-lg text-ios-dark dark:text-white leading-tight truncate pr-4">
+            {task.title}
+          </h3>
+          
+          <p className="text-sm text-gray-500 dark:text-gray-400 line-clamp-1">
+            {task.description}
+          </p>
+        </div>
+
+        {/* Action / Reward */}
+        <div className="flex flex-row sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto pl-1 sm:pl-0 border-t sm:border-t-0 border-gray-100 dark:border-gray-800 pt-4 sm:pt-0 mt-2 sm:mt-0">
+          <div className="text-left sm:text-right">
+            <div className="flex items-center sm:justify-end gap-1.5 text-ios-green font-bold text-xl">
+              <span className="text-sm font-medium text-gray-400">$</span>
+              {task.reward.toFixed(2)}
+            </div>
+            <div className="flex items-center gap-1.5 text-xs font-medium text-gray-400 mt-0.5">
+              <IoTimeOutline />
+              <span>{task.timeEstimate}</span>
+            </div>
+          </div>
+
+          <div className="hidden sm:flex w-8 h-8 rounded-full bg-gray-50 dark:bg-white/10 items-center justify-center text-gray-400 group-hover:bg-ios-blue group-hover:text-white transition-colors mt-3">
+            <IoChevronForward size={18} />
+          </div>
+          
+          {/* Mobile Start Button */}
+          <Button 
+            size="sm" 
+            className="sm:hidden rounded-xl bg-ios-dark dark:bg-white text-white dark:text-black h-9 px-6 shadow-lg"
+            onClick={(e) => {
+              e.stopPropagation();
+              onStart(task);
+            }}
+          >
+            Start
+          </Button>
         </div>
       </div>
     </motion.div>

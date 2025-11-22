@@ -1,13 +1,13 @@
 // path: src/pages/Dashboard.jsx
 import React, { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/AuthContext.jsx';
 import { IoWalletOutline, IoCheckmarkDoneOutline, IoPeopleOutline, IoTimeOutline } from 'react-icons/io5';
-import StatCard from '../components/dashboard/StatCard';
-import EarningsChart from '../components/dashboard/EarningsChart';
-import RecentActivity from '../components/dashboard/RecentActivity';
-import ProfileCompletionModal from '../components/modals/ProfileCompletionModal';
+import StatCard from '../components/dashboard/StatCard.jsx';
+import EarningsChart from '../components/dashboard/EarningsChart.jsx';
+import RecentActivity from '../components/dashboard/RecentActivity.jsx';
+import ProfileCompletionModal from '../components/modals/ProfileCompletionModal.jsx';
 
-// Mock Data (To be replaced with real Firestore data later)
+// Mock Data
 const MOCK_CHART_DATA = [
   { day: 'Mon', value: 12 },
   { day: 'Tue', value: 19 },
@@ -46,7 +46,6 @@ const Dashboard = () => {
     setShowCompletionModal(false);
   };
 
-  // Use profile data if available, otherwise fallbacks
   const earnings = userProfile?.earnings?.total || 145.50;
   const pending = userProfile?.earnings?.pending || 12.00;
   const tasks = userProfile?.stats?.tasksCompleted || 42;
@@ -58,7 +57,6 @@ const Dashboard = () => {
         onComplete={handleModalComplete} 
       />
 
-      {/* Header */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-2xl md:text-3xl font-bold text-ios-dark dark:text-white tracking-tight">
@@ -74,7 +72,6 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         <StatCard 
           title="Total Earnings" 
@@ -116,7 +113,6 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Main Content Split */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
         <div className="lg:col-span-2">
           <EarningsChart data={MOCK_CHART_DATA} loading={loading} />
