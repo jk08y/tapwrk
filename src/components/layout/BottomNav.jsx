@@ -14,7 +14,7 @@ const BottomNav = () => {
 
   return (
     <div className="lg:hidden fixed bottom-6 inset-x-4 z-50 animate-float-up pointer-events-none">
-      <div className="pointer-events-auto glass-strong bg-white/90 dark:bg-[#1C1C1E]/90 rounded-full shadow-2xl shadow-black/10 border border-white/20 dark:border-white/10 px-6 py-3 flex justify-between items-center max-w-xs mx-auto backdrop-blur-2xl">
+      <div className="pointer-events-auto glass-strong bg-gray-400/80 dark:bg-gray-500/80 rounded-full shadow-2xl shadow-black/10 border border-white/20 dark:border-white/10 px-6 py-3 flex justify-between items-center max-w-xs mx-auto backdrop-blur-2xl">
         {navItems.map((item) => (
           <NavLink
             key={item.name}
@@ -22,7 +22,7 @@ const BottomNav = () => {
             end={item.exact}
             className={({ isActive }) => cn(
               "flex flex-col items-center justify-center w-12 h-12 rounded-full transition-all duration-300 relative group",
-              isActive ? "text-ios-blue" : "text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
+              isActive ? "text-white" : "text-white/60 hover:text-white/80"
             )}
           >
             {({ isActive }) => (
@@ -33,9 +33,9 @@ const BottomNav = () => {
                 )}>
                   <item.icon size={22} className={cn(isActive && "drop-shadow-sm")} />
                 </span>
-                
+
                 {isActive && (
-                  <span className="absolute bottom-2 w-1 h-1 bg-ios-blue rounded-full animate-fade-in" />
+                  <span className="absolute bottom-2 w-1 h-1 bg-white rounded-full animate-fade-in" />
                 )}
               </>
             )}
