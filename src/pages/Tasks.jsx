@@ -75,8 +75,8 @@ const Tasks = () => {
             key={cat}
             onClick={() => setActiveCategory(cat)}
             className={`px-4 sm:px-6 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-bold whitespace-nowrap transition-all duration-300 border touch-manipulation ${activeCategory === cat
-                ? "bg-ios-blue border-ios-blue text-white shadow-lg shadow-blue-500/25"
-                : "bg-white dark:bg-[#1C1C1E] border-gray-200 dark:border-gray-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-white/5"
+              ? "bg-ios-blue border-ios-blue text-white shadow-lg shadow-blue-500/25"
+              : "bg-white dark:bg-[#1C1C1E] border-gray-200 dark:border-gray-800 text-gray-500 hover:bg-gray-50 dark:hover:bg-white/5"
               }`}
           >
             {cat}
@@ -107,10 +107,10 @@ const Tasks = () => {
         </AnimatePresence>
       </motion.div>
 
-      {/* Premium Task Detail Modal */}
+      {/* Premium Task Detail Modal - Mobile Optimized */}
       <AnimatePresence>
         {selectedTask && (
-          <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center px-0 sm:px-4 pb-0 sm:pb-0">
+          <div className="fixed inset-0 z-[70] flex items-end sm:items-center justify-center px-0 sm:px-4">
             {/* Backdrop */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -126,43 +126,43 @@ const Tasks = () => {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 100, scale: 0.98 }}
               transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative w-full sm:max-w-lg max-h-[90vh] sm:max-h-[85vh] overflow-y-auto bg-white dark:bg-[#151516] rounded-t-[2rem] sm:rounded-[2.5rem] shadow-2xl z-10 no-scrollbar flex flex-col"
+              className="relative w-full sm:max-w-md max-h-[85vh] overflow-y-auto bg-white dark:bg-[#151516] rounded-t-[1.5rem] sm:rounded-[2rem] shadow-2xl z-10 no-scrollbar flex flex-col"
             >
               {/* Mobile Drag Handle */}
-              <div className="sm:hidden w-10 h-1 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mt-3 mb-1"></div>
+              <div className="sm:hidden w-9 h-1 bg-gray-300 dark:bg-gray-600 rounded-full mx-auto mt-2.5 mb-0.5 shrink-0"></div>
 
-              {/* Sticky Header */}
-              <div className="sticky top-0 z-20 bg-white/80 dark:bg-[#151516]/80 backdrop-blur-xl px-4 sm:px-6 py-4 sm:py-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
-                <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500">
-                  <span className="w-2 h-2 rounded-full bg-ios-blue animate-pulse"></span>
+              {/* Compact Header */}
+              <div className="sticky top-0 z-20 bg-white/90 dark:bg-[#151516]/90 backdrop-blur-xl px-3.5 sm:px-5 py-2.5 sm:py-4 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+                <div className="flex items-center gap-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-gray-500">
+                  <span className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-ios-blue animate-pulse"></span>
                   Task Details
                 </div>
                 <button
                   onClick={() => setSelectedTask(null)}
-                  className="w-8 h-8 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-500 hover:bg-gray-200 dark:hover:bg-white/20 transition-colors touch-manipulation active:scale-95"
+                  className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-100 dark:bg-white/10 flex items-center justify-center text-gray-500 hover:bg-gray-200 dark:hover:bg-white/20 transition-colors touch-manipulation active:scale-95"
                 >
-                  <IoClose size={18} />
+                  <IoClose size={16} />
                 </button>
               </div>
 
-              <div className="p-4 sm:p-6 md:p-8 space-y-6 sm:space-y-8">
-                {/* Title & Reward */}
+              <div className="p-3.5 sm:p-5 space-y-4 sm:space-y-6">
+                {/* Title & Reward - Compact Layout */}
                 <div>
-                  <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 sm:gap-4">
-                    <h2 className="text-xl sm:text-2xl font-bold text-ios-dark dark:text-white leading-tight">
+                  <div className="flex items-start justify-between gap-3">
+                    <h2 className="text-base sm:text-xl font-bold text-ios-dark dark:text-white leading-snug flex-1">
                       {selectedTask.title}
                     </h2>
-                    <div className="flex sm:flex-col items-center sm:items-end gap-2 sm:gap-0 shrink-0">
-                      <div className="text-xl sm:text-2xl font-bold text-ios-green">${selectedTask.reward.toFixed(2)}</div>
-                      <div className="text-xs text-gray-400 font-medium sm:mt-1">Reward</div>
+                    <div className="text-right shrink-0">
+                      <div className="text-lg sm:text-xl font-bold text-ios-green">${selectedTask.reward.toFixed(2)}</div>
+                      <div className="text-[10px] sm:text-xs text-gray-400 font-medium">Reward</div>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap gap-2 sm:gap-3 mt-3 sm:mt-4">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 text-xs font-semibold text-gray-600 dark:text-gray-300">
-                      <IoTimeOutline /> {selectedTask.timeEstimate}
+                  <div className="flex flex-wrap gap-1.5 sm:gap-2 mt-2.5 sm:mt-3">
+                    <div className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-gray-50 dark:bg-white/5 border border-gray-100 dark:border-white/5 text-[10px] sm:text-xs font-semibold text-gray-600 dark:text-gray-300">
+                      <IoTimeOutline size={12} /> {selectedTask.timeEstimate}
                     </div>
-                    <div className="inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-lg bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-500/10 text-xs font-semibold text-ios-blue">
+                    <div className="inline-flex items-center gap-1 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full bg-blue-50 dark:bg-blue-900/20 border border-blue-100 dark:border-blue-500/10 text-[10px] sm:text-xs font-semibold text-ios-blue">
                       {selectedTask.category}
                     </div>
                   </div>
@@ -170,58 +170,65 @@ const Tasks = () => {
 
                 <div className="h-px w-full bg-gray-100 dark:bg-gray-800"></div>
 
-                {/* Steps */}
-                <div className="space-y-3 sm:space-y-4">
-                  <h3 className="text-xs sm:text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wide">Instructions</h3>
+                {/* Steps - Compact */}
+                <div className="space-y-2.5 sm:space-y-3">
+                  <h3 className="text-[10px] sm:text-xs font-bold text-gray-900 dark:text-white uppercase tracking-wide">Instructions</h3>
 
-                  <div className="space-y-3 sm:space-y-4 relative">
+                  <div className="space-y-2.5 sm:space-y-3 relative">
                     {/* Connecting Line */}
-                    <div className="absolute left-[13px] sm:left-[15px] top-4 bottom-4 w-0.5 bg-gray-100 dark:bg-gray-800 -z-10"></div>
+                    <div className="absolute left-[11px] sm:left-[13px] top-3 bottom-3 w-0.5 bg-gray-100 dark:bg-gray-800 -z-10"></div>
 
-                    <div className="flex gap-3 sm:gap-4">
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-ios-blue text-white flex items-center justify-center font-bold text-xs sm:text-sm shadow-lg shadow-blue-500/30 shrink-0">1</div>
-                      <div className="pt-1 sm:pt-1.5">
-                        <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5 sm:mb-1">Open Task Link</p>
-                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Click the button below to visit the target page.</p>
+                    <div className="flex gap-2.5 sm:gap-3">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-ios-blue text-white flex items-center justify-center font-bold text-[10px] sm:text-xs shadow-lg shadow-blue-500/30 shrink-0">1</div>
+                      <div className="pt-0.5 sm:pt-1 flex-1 min-w-0">
+                        <p className="text-[11px] sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Open Task Link</p>
+                        <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Click the button below to visit the target page.</p>
                       </div>
                     </div>
 
-                    <div className="flex gap-3 sm:gap-4">
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white dark:bg-gray-800 border-2 border-ios-blue text-ios-blue flex items-center justify-center font-bold text-xs sm:text-sm shrink-0">2</div>
-                      <div className="pt-1 sm:pt-1.5">
-                        <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5 sm:mb-1">Complete Action</p>
-                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                          {selectedTask.description} Perform the action accurately and authentically.
+                    <div className="flex gap-2.5 sm:gap-3">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white dark:bg-gray-800 border-2 border-ios-blue text-ios-blue flex items-center justify-center font-bold text-[10px] sm:text-xs shrink-0">2</div>
+                      <div className="pt-0.5 sm:pt-1 flex-1 min-w-0">
+                        <p className="text-[11px] sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Complete Action</p>
+                        <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                          {selectedTask.description}
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex gap-3 sm:gap-4">
-                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-400 flex items-center justify-center font-bold text-xs sm:text-sm shrink-0">3</div>
-                      <div className="pt-1 sm:pt-1.5">
-                        <p className="text-xs sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5 sm:mb-1">Verify & Earn</p>
-                        <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Return here to confirm completion. Funds are credited after a quick check.</p>
+                    <div className="flex gap-2.5 sm:gap-3">
+                      <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 text-gray-400 flex items-center justify-center font-bold text-[10px] sm:text-xs shrink-0">3</div>
+                      <div className="pt-0.5 sm:pt-1 flex-1 min-w-0">
+                        <p className="text-[11px] sm:text-sm font-semibold text-gray-900 dark:text-white mb-0.5">Verify & Earn</p>
+                        <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Return here to confirm. Funds credited after verification.</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Warning Box */}
-                <div className="p-3 sm:p-4 bg-orange-50 dark:bg-orange-900/10 rounded-xl sm:rounded-2xl border border-orange-100 dark:border-orange-900/30 flex gap-2 sm:gap-3">
-                  <IoWarningOutline className="text-orange-600 dark:text-orange-500 shrink-0 mt-0.5" size={16} />
-                  <p className="text-[11px] sm:text-xs text-orange-800 dark:text-orange-400 font-medium leading-relaxed">
-                    Do not use VPNs, proxies, or automated bots. Fraudulent attempts will result in an immediate ban.
+                {/* Warning Box - Compact */}
+                <div className="p-2.5 sm:p-3 bg-orange-50 dark:bg-orange-900/10 rounded-xl border border-orange-100 dark:border-orange-900/30 flex gap-2">
+                  <IoWarningOutline className="text-orange-600 dark:text-orange-500 shrink-0 mt-0.5" size={14} />
+                  <p className="text-[10px] sm:text-xs text-orange-800 dark:text-orange-400 font-medium leading-relaxed">
+                    No VPNs, proxies, or bots. Fraud results in a ban.
                   </p>
                 </div>
               </div>
 
-              {/* Footer Actions */}
-              <div className="sticky bottom-0 p-4 sm:p-6 pb-[max(1rem,env(safe-area-inset-bottom))] sm:pb-6 bg-white dark:bg-[#151516] border-t border-gray-100 dark:border-gray-800 flex gap-2 sm:gap-3">
-                <Button variant="secondary" onClick={() => setSelectedTask(null)} className="flex-1 bg-gray-100 dark:bg-white/5 border-none h-11 sm:h-auto text-sm sm:text-base touch-manipulation active:scale-95">
+              {/* Footer Actions - Pill Buttons */}
+              <div className="sticky bottom-0 p-3 sm:p-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-4 bg-white dark:bg-[#151516] border-t border-gray-100 dark:border-gray-800 flex gap-2 sm:gap-3">
+                <Button
+                  variant="secondary"
+                  onClick={() => setSelectedTask(null)}
+                  className="flex-1 bg-gray-100 dark:bg-white/5 border-none h-10 sm:h-11 text-xs sm:text-sm rounded-full touch-manipulation active:scale-95"
+                >
                   Cancel
                 </Button>
-                <Button onClick={confirmStart} className="flex-[2] shadow-xl shadow-blue-500/20 gap-2 h-11 sm:h-auto text-sm sm:text-base touch-manipulation active:scale-95">
-                  Start Task <IoOpenOutline />
+                <Button
+                  onClick={confirmStart}
+                  className="flex-[2] shadow-xl shadow-blue-500/20 gap-1.5 h-10 sm:h-11 text-xs sm:text-sm rounded-full touch-manipulation active:scale-95"
+                >
+                  Start Task <IoOpenOutline size={14} />
                 </Button>
               </div>
             </motion.div>

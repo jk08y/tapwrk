@@ -92,7 +92,7 @@ const TaskCard = ({ task, onStart }) => {
           {/* Mobile Start Button */}
           <Button
             size="sm"
-            className="sm:hidden rounded-xl bg-ios-dark dark:bg-white text-white dark:text-black h-10 px-5 shadow-lg touch-manipulation active:scale-95 text-sm font-semibold"
+            className="sm:hidden rounded-full bg-ios-dark dark:bg-white text-white dark:text-black h-9 px-4 shadow-lg touch-manipulation active:scale-95 text-xs font-semibold"
             onClick={(e) => {
               e.stopPropagation();
               onStart(task);
