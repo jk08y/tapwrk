@@ -1,26 +1,31 @@
 // path: src/pages/Earnings.jsx
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { 
-  IoWalletOutline, 
-  IoLogoPaypal, 
-  IoLogoBitcoin, 
-  IoCardOutline, 
-  IoDownloadOutline, 
+import {
+  IoWalletOutline,
+  IoLogoPaypal,
+  IoLogoBitcoin,
+  IoCardOutline,
+  IoCheckmarkCircle,
   IoTimeOutline,
-  IoTrendingUp
+  IoTrendingUp,
+  IoChevronForward,
+  IoArrowDown,
+  IoArrowUp
 } from 'react-icons/io5';
 
-// Added .jsx extensions for explicit resolution
 import Button from '../components/common/Button.jsx';
-import StatCard from '../components/dashboard/StatCard.jsx';
-import PaymentMethodCard from '../components/earnings/PaymentMethodCard.jsx';
-import RecentActivity from '../components/dashboard/RecentActivity.jsx'; 
 import { toast } from 'react-toastify';
 
 const Earnings = () => {
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [selectedMethod, setSelectedMethod] = useState('paypal');
+
+  const PAYMENT_METHODS = [
+    { id: 'paypal', name: 'PayPal', icon: IoLogoPaypal },
+    { id: 'crypto', name: 'Crypto', icon: IoLogoBitcoin },
+    { id: 'bank', name: 'Bank', icon: IoCardOutline },
+  ];
 
   const MOCK_HISTORY = [
     { id: 1, type: 'withdrawal', title: 'PayPal Withdrawal', amount: -25.00, time: '2 days ago' },
@@ -40,171 +45,204 @@ const Earnings = () => {
   };
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto">
-      
+    <div className="space-y-5 sm:space-y-8 max-w-5xl mx-auto pb-24 sm:pb-10 px-4 sm:px-0">
+
       {/* Header Section */}
-      <div className="flex flex-col md:flex-row justify-between items-end gap-4 mb-2">
-        <div>
-          <h1 className="text-3xl font-bold text-ios-dark dark:text-white tracking-tight">Wallet</h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-1">Manage your funds and payouts.</p>
-        </div>
-        <Button variant="secondary" size="sm" className="gap-2 bg-white dark:bg-white/5 border border-gray-200 dark:border-gray-800">
-          <IoDownloadOutline size={16} /> Export CSV
-        </Button>
+      <div className="pt-1">
+        <h1 className="text-2xl sm:text-3xl font-bold text-ios-dark dark:text-white tracking-tight">Wallet</h1>
+        <p className="text-sm sm:text-base text-gray-500 dark:text-gray-400 mt-1">Manage your funds and payouts.</p>
       </div>
 
-      {/* Wallet Overview Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        
-        {/* Main Balance Card - Adapted for Light/Dark Mode */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
+      {/* Balance Card - Premium Gradient */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="relative overflow-hidden rounded-2xl sm:rounded-[2rem] bg-gradient-to-br from-ios-dark via-gray-900 to-gray-800 p-5 sm:p-8 shadow-xl"
+      >
+        {/* Decorative Elements */}
+        <div className="absolute top-0 right-0 w-40 h-40 sm:w-64 sm:h-64 bg-ios-blue/20 rounded-full blur-3xl -mt-10 -mr-10" />
+        <div className="absolute bottom-0 left-0 w-32 h-32 bg-purple-500/10 rounded-full blur-2xl -mb-8 -ml-8" />
+
+        <div className="relative z-10">
+          {/* Wallet Icon & Label */}
+          <div className="flex items-center gap-2 mb-3 sm:mb-4">
+            <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-white/10 flex items-center justify-center">
+              <IoWalletOutline size={18} className="text-white" />
+            </div>
+            <span className="text-white/60 text-xs sm:text-sm font-medium uppercase tracking-wider">Total Balance</span>
+          </div>
+
+          {/* Balance Amount */}
+          <div className="text-4xl sm:text-5xl font-bold text-white tracking-tight mb-4 sm:mb-6">
+            $145<span className="text-white/60">.50</span>
+          </div>
+
+          {/* Available & Pending */}
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-white/10">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-ios-green" />
+                <span className="text-[10px] sm:text-xs text-white/60 font-medium uppercase tracking-wide">Available</span>
+              </div>
+              <p className="text-lg sm:text-xl font-bold text-white">$133.50</p>
+            </div>
+            <div className="bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-3 sm:p-4 border border-white/10">
+              <div className="flex items-center gap-1.5 mb-1">
+                <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" />
+                <span className="text-[10px] sm:text-xs text-white/60 font-medium uppercase tracking-wide">Pending</span>
+              </div>
+              <p className="text-lg sm:text-xl font-bold text-white/80">$12.00</p>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-2 gap-3 sm:gap-4">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="lg:col-span-2 relative overflow-hidden rounded-[2.5rem] bg-white dark:bg-[#151516] text-ios-dark dark:text-white p-8 md:p-10 shadow-xl shadow-blue-900/5 dark:shadow-black/20 border border-gray-100 dark:border-gray-800"
+          transition={{ delay: 0.1 }}
+          className="bg-white dark:bg-[#1C1C1E] rounded-xl sm:rounded-2xl p-3.5 sm:p-5 border border-gray-200 dark:border-gray-800 shadow-sm"
         >
-          {/* Abstract Ambient Glow - Adjusted colors for modes */}
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-100/50 dark:bg-blue-500/10 rounded-full blur-[100px] -translate-y-1/2 translate-x-1/3 pointer-events-none"></div>
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-100/50 dark:bg-purple-500/10 rounded-full blur-[80px] translate-y-1/3 -translate-x-1/3 pointer-events-none"></div>
-
-          <div className="relative z-10 flex flex-col h-full justify-between">
-            <div className="flex justify-between items-start mb-8">
-              <div>
-                <p className="text-gray-500 dark:text-gray-400 text-sm font-medium uppercase tracking-wider mb-1">Total Balance</p>
-                <h2 className="text-5xl md:text-6xl font-bold tracking-tight text-ios-dark dark:text-white">
-                  $145.50
-                </h2>
-              </div>
-              <div className="w-12 h-12 rounded-2xl bg-gray-50 dark:bg-white/10 border border-gray-100 dark:border-white/5 flex items-center justify-center backdrop-blur-md">
-                <IoWalletOutline size={24} className="text-ios-blue dark:text-blue-400" />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 gap-4 mt-auto">
-              <div className="p-4 rounded-2xl bg-gray-50/80 dark:bg-white/5 border border-gray-100 dark:border-white/5 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-1 text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wide font-bold">
-                  <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                  Available
-                </div>
-                <p className="text-xl font-bold text-ios-dark dark:text-white">$133.50</p>
-              </div>
-              <div className="p-4 rounded-2xl bg-gray-50/80 dark:bg-white/5 border border-gray-100 dark:border-white/5 backdrop-blur-sm">
-                <div className="flex items-center gap-2 mb-1 text-gray-500 dark:text-gray-400 text-xs uppercase tracking-wide font-bold">
-                  <div className="w-2 h-2 rounded-full bg-yellow-500"></div>
-                  Pending
-                </div>
-                <p className="text-xl font-bold text-ios-dark dark:text-gray-200">$12.00</p>
-              </div>
-            </div>
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-green-50 dark:bg-green-900/20 flex items-center justify-center text-ios-green mb-2.5 sm:mb-3">
+            <IoTrendingUp size={18} />
+          </div>
+          <div className="text-lg sm:text-2xl font-bold text-ios-dark dark:text-white">$1,240</div>
+          <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium">Lifetime Earnings</div>
+          <div className="flex items-center gap-1 mt-1 text-[10px] sm:text-xs text-ios-green font-semibold">
+            <IoArrowUp size={10} /> +12% this month
           </div>
         </motion.div>
 
-        {/* Lifetime Stats */}
-        <div className="flex flex-col gap-4 lg:gap-6">
-          <div className="flex-1">
-            <StatCard 
-              title="Lifetime Earnings" 
-              value="$1,240.50" 
-              icon={IoTrendingUp} 
-              trend="up"
-              trendValue="+12%"
-              color="green" 
-            />
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15 }}
+          className="bg-white dark:bg-[#1C1C1E] rounded-xl sm:rounded-2xl p-3.5 sm:p-5 border border-gray-200 dark:border-gray-800 shadow-sm"
+        >
+          <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-ios-blue mb-2.5 sm:mb-3">
+            <IoTimeOutline size={18} />
           </div>
-          <div className="flex-1">
-            <StatCard 
-              title="Next Payout" 
-              value="Oct 24" 
-              icon={IoTimeOutline} 
-              color="blue" 
-            />
+          <div className="text-lg sm:text-2xl font-bold text-ios-dark dark:text-white">Oct 24</div>
+          <div className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium">Next Payout</div>
+          <div className="flex items-center gap-1 mt-1 text-[10px] sm:text-xs text-gray-400 font-medium">
+            in 3 days
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      {/* Action Area */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        
-        {/* Withdrawal Form */}
-        <div className="lg:col-span-7 space-y-6">
-          <div className="bg-white dark:bg-[#1C1C1E] p-6 md:p-8 rounded-[2rem] border border-gray-200 dark:border-gray-800 shadow-sm">
-            <div className="mb-8">
-              <h3 className="text-xl font-bold text-ios-dark dark:text-white mb-1">Request Withdrawal</h3>
-              <p className="text-sm text-gray-500 dark:text-gray-400">Choose where you want to send your funds.</p>
-            </div>
-            
-            <div className="mb-8">
-              <label className="block text-xs font-bold text-gray-400 uppercase tracking-wider mb-4 pl-1">Payment Method</label>
-              <div className="grid grid-cols-3 gap-3 md:gap-4">
-                <PaymentMethodCard 
-                  id="paypal" 
-                  name="PayPal" 
-                  icon={IoLogoPaypal} 
-                  selected={selectedMethod === 'paypal'} 
-                  onSelect={setSelectedMethod} 
-                />
-                <PaymentMethodCard 
-                  id="crypto" 
-                  name="Crypto" 
-                  icon={IoLogoBitcoin} 
-                  selected={selectedMethod === 'crypto'} 
-                  onSelect={setSelectedMethod} 
-                />
-                <PaymentMethodCard 
-                  id="bank" 
-                  name="Bank" 
-                  icon={IoCardOutline} 
-                  selected={selectedMethod === 'bank'} 
-                  onSelect={setSelectedMethod} 
-                />
-              </div>
-            </div>
+      {/* Withdrawal Section */}
+      <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 border border-gray-200 dark:border-gray-800 shadow-sm">
+        <div className="mb-5 sm:mb-6">
+          <h3 className="text-base sm:text-lg font-bold text-ios-dark dark:text-white mb-0.5">Request Withdrawal</h3>
+          <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">Choose your payment method and amount.</p>
+        </div>
 
-            <form onSubmit={handleWithdraw}>
-              <div className="mb-8">
-                <div className="relative">
-                  <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-                    <span className="text-gray-400 font-semibold text-lg">$</span>
+        {/* Payment Methods - Compact on Mobile */}
+        <div className="mb-5 sm:mb-6">
+          <label className="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider mb-2.5 sm:mb-3">Payment Method</label>
+          <div className="grid grid-cols-3 gap-2 sm:gap-3">
+            {PAYMENT_METHODS.map((method) => (
+              <motion.button
+                key={method.id}
+                whileTap={{ scale: 0.97 }}
+                onClick={() => setSelectedMethod(method.id)}
+                className={`relative p-3 sm:p-4 rounded-xl sm:rounded-2xl border-2 transition-all flex flex-col items-center justify-center gap-1.5 sm:gap-2 h-20 sm:h-24 touch-manipulation ${selectedMethod === method.id
+                    ? "border-ios-blue bg-blue-50 dark:bg-blue-900/20"
+                    : "border-gray-100 dark:border-gray-800 bg-gray-50 dark:bg-black/20 hover:border-gray-200 dark:hover:border-gray-700"
+                  }`}
+              >
+                {selectedMethod === method.id && (
+                  <div className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 text-ios-blue">
+                    <IoCheckmarkCircle size={14} />
                   </div>
-                  <input 
-                    type="number"
-                    min="10"
-                    step="0.01"
-                    placeholder="0.00"
-                    value={withdrawAmount}
-                    onChange={(e) => setWithdrawAmount(e.target.value)}
-                    className="w-full bg-gray-50 dark:bg-black border border-gray-200 dark:border-gray-700 rounded-2xl py-5 pl-10 pr-4 text-3xl font-bold text-ios-dark dark:text-white placeholder-gray-300 focus:ring-4 focus:ring-ios-blue/10 focus:border-ios-blue transition-all outline-none"
-                  />
-                </div>
-                <div className="flex justify-between items-center mt-3 px-2">
-                  <p className="text-xs font-medium text-gray-400">Min. withdrawal $10.00</p>
-                  <button 
-                    type="button" 
-                    onClick={() => setWithdrawAmount('133.50')}
-                    className="text-xs font-bold text-ios-blue hover:underline"
-                  >
-                    Max: $133.50
-                  </button>
-                </div>
-              </div>
-
-              <Button type="submit" className="w-full py-4 text-base shadow-lg shadow-blue-500/20 rounded-2xl">
-                Review & Withdraw
-              </Button>
-            </form>
+                )}
+                <method.icon size={22} className={selectedMethod === method.id ? "text-ios-blue" : "text-gray-400"} />
+                <span className={`font-semibold text-[10px] sm:text-xs ${selectedMethod === method.id ? "text-ios-blue" : "text-gray-500 dark:text-gray-400"}`}>
+                  {method.name}
+                </span>
+              </motion.button>
+            ))}
           </div>
         </div>
 
-        {/* Transaction History */}
-        <div className="lg:col-span-5">
-          <div className="bg-white dark:bg-[#1C1C1E] rounded-[2rem] border border-gray-200 dark:border-gray-800 shadow-sm h-full">
-            <div className="p-6 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
-              <h3 className="font-bold text-ios-dark dark:text-white">Recent Transactions</h3>
-              <button className="text-xs font-bold text-ios-blue hover:opacity-80">View All</button>
+        {/* Amount Input */}
+        <form onSubmit={handleWithdraw}>
+          <div className="mb-5 sm:mb-6">
+            <label className="block text-[10px] sm:text-xs font-bold text-gray-400 uppercase tracking-wider mb-2.5 sm:mb-3">Amount</label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                <span className="text-gray-400 font-bold text-xl sm:text-2xl">$</span>
+              </div>
+              <input
+                type="number"
+                min="10"
+                step="0.01"
+                placeholder="0.00"
+                value={withdrawAmount}
+                onChange={(e) => setWithdrawAmount(e.target.value)}
+                className="w-full bg-gray-50 dark:bg-black/30 border border-gray-200 dark:border-gray-700 rounded-xl sm:rounded-2xl py-4 sm:py-5 pl-10 sm:pl-12 pr-4 text-2xl sm:text-3xl font-bold text-ios-dark dark:text-white placeholder-gray-300 dark:placeholder-gray-600 focus:ring-4 focus:ring-ios-blue/10 focus:border-ios-blue transition-all outline-none"
+              />
             </div>
-            <div className="p-2">
-              <RecentActivity activities={MOCK_HISTORY} loading={false} />
+            <div className="flex justify-between items-center mt-2.5 px-1">
+              <p className="text-[10px] sm:text-xs font-medium text-gray-400">Min. $10.00</p>
+              <button
+                type="button"
+                onClick={() => setWithdrawAmount('133.50')}
+                className="text-[10px] sm:text-xs font-bold text-ios-blue hover:underline touch-manipulation"
+              >
+                Max: $133.50
+              </button>
             </div>
           </div>
+
+          <Button
+            type="submit"
+            className="w-full h-11 sm:h-12 text-sm sm:text-base shadow-lg shadow-blue-500/20 rounded-full touch-manipulation active:scale-[0.98]"
+          >
+            Review & Withdraw
+          </Button>
+        </form>
+      </div>
+
+      {/* Transaction History */}
+      <div className="bg-white dark:bg-[#1C1C1E] rounded-2xl sm:rounded-[2rem] border border-gray-200 dark:border-gray-800 overflow-hidden shadow-sm">
+        <div className="p-4 sm:p-5 border-b border-gray-100 dark:border-gray-800 flex justify-between items-center">
+          <h3 className="text-base sm:text-lg font-bold text-ios-dark dark:text-white">Recent Transactions</h3>
+          <button className="text-[10px] sm:text-xs font-bold text-ios-blue hover:underline touch-manipulation">View All</button>
+        </div>
+
+        <div className="divide-y divide-gray-100 dark:divide-gray-800">
+          {MOCK_HISTORY.map((item, index) => (
+            <motion.div
+              key={item.id}
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 }}
+              className="p-3.5 sm:p-5 flex items-center gap-3 sm:gap-4 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors touch-manipulation"
+            >
+              {/* Icon */}
+              <div className={`w-10 h-10 sm:w-11 sm:h-11 rounded-full flex items-center justify-center shrink-0 ${item.type === 'earning'
+                  ? 'bg-green-50 dark:bg-green-900/20 text-ios-green'
+                  : 'bg-red-50 dark:bg-red-900/20 text-red-500'
+                }`}>
+                {item.type === 'earning' ? <IoArrowDown size={18} /> : <IoArrowUp size={18} />}
+              </div>
+
+              {/* Info */}
+              <div className="flex-1 min-w-0">
+                <p className="font-semibold text-sm sm:text-base text-ios-dark dark:text-white truncate">{item.title}</p>
+                <p className="text-[10px] sm:text-xs text-gray-500 dark:text-gray-400">{item.time}</p>
+              </div>
+
+              {/* Amount */}
+              <div className={`font-bold text-sm sm:text-base shrink-0 ${item.amount > 0 ? 'text-ios-green' : 'text-red-500'
+                }`}>
+                {item.amount > 0 ? '+' : ''}${Math.abs(item.amount).toFixed(2)}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </div>
     </div>
