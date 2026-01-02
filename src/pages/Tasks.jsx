@@ -216,7 +216,7 @@ const Tasks = () => {
               </div>
 
               {/* Footer Actions - Pill Buttons */}
-              <div className="sticky bottom-0 p-3 sm:p-4 pb-[max(0.75rem,env(safe-area-inset-bottom))] sm:pb-4 bg-white dark:bg-[#151516] border-t border-gray-100 dark:border-gray-800 flex gap-2 sm:gap-3">
+              <div className="sticky bottom-0 p-3 sm:p-4 pb-20 sm:pb-4 bg-white dark:bg-[#151516] border-t border-gray-100 dark:border-gray-800 flex gap-2 sm:gap-3">
                 <Button
                   variant="secondary"
                   onClick={() => setSelectedTask(null)}
